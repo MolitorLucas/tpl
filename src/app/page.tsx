@@ -1,6 +1,4 @@
 import { runLexer } from "@/app/grammar/lexer/lexer-runner";
-import Image from "next/image";
-import styles from "./page.module.css";
 
 const exemplo = `
 *InicioDoFim
@@ -24,93 +22,64 @@ console.log(JSON.stringify(resultado, null, 2));
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center py-10 font-inter">
+      <main className="flex flex-col items-center justify-center w-full px-4 sm:px-6 lg:px-8 max-w-4xl">
+        <h1 className="text-4xl sm:text-5xl font-bold text-white mb-8 text-center leading-tight rounded-xl p-4 shadow-lg bg-gray-800">
+          Analisador Léxico TPL
+        </h1>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+        <div className="w-full bg-gray-800 rounded-lg shadow-xl overflow-hidden mb-8">
+          <table className="min-w-full leading-normal">
+            <thead>
+              <tr className="bg-gray-700 text-gray-200 uppercase text-sm font-semibold">
+                <th className="py-3 px-6 text-left">Categoria</th>
+                <th className="py-3 px-6 text-left">Tokens Encontrados</th>
+              </tr>
+            </thead>
+            <tbody className="text-gray-300">
+              {Object.entries(resultado).map(([category, tokens], index) => (
+                <tr
+                  key={category}
+                  className={`border-b border-gray-600 ${
+                    index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"
+                  } hover:bg-gray-600 transition duration-300 ease-in-out`}
+                >
+                  <td className="py-3 px-6 whitespace-nowrap font-medium capitalize">
+                    {category === "errors"
+                      ? "Erros"
+                      : category.replace(/([A-Z])/g, " $1").trim()}
+                  </td>
+                  <td className="py-3 px-6 break-words">
+                    {tokens.length > 0 ? (
+                      <div className="flex flex-wrap gap-2">
+                        {tokens.map((token: string, tokenIndex: number) => (
+                          <span
+                            key={tokenIndex}
+                            className="bg-purple-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full shadow-md"
+                          >
+                            {token}
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <span className="text-gray-400 italic">Nenhum</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="w-full max-w-4xl bg-gray-800 rounded-lg shadow-xl overflow-hidden">
+          <div className="p-4 bg-gray-700 text-gray-200 font-semibold text-lg border-b border-gray-600">
+            Código de Exemplo Analisado
+          </div>
+          <pre className="p-4 text-sm bg-gray-900 text-gray-100 overflow-auto rounded-b-lg">
+            <code>{exemplo.trim()}</code>
+          </pre>
         </div>
       </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
 }
