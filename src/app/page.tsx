@@ -1,7 +1,9 @@
+"use client";
+import { useState, useEffect } from "react";
 import { runLexer } from "@/app/grammar/lexer/lexer-runner";
 
-const exemplo = `
-*InicioDoFim
+export default function Home() {
+  const [codigo, setCodigo] = useState(`*InicioDoFim
 !joaomarcelo_num1:Infi _VsfdAdmin;
 !joaomarcelo_num2:Infi _VsfdAdmin;
 !joaomarcelo_media:Infi _VsfdAdmin;
@@ -11,16 +13,18 @@ IssoEhGulaCara (° !joaomarcelo_num2 °) _VsfdAdmin;
 !joaomarcelo_media <- (° !joaomarcelo_num1 °+° !joaomarcelo_num2 °)°/° 2_VsfdAdmin;
 
 Banido (° !joaomarcelo_media °) _VsfdAdmin;
-FimDoInicio*
-`;
+FimDoInicio*`);
 
-const resultado = runLexer(exemplo);
+  const [resultado, setResultado] = useState(() => runLexer(codigo));
 
-console.log("Resultado da análise léxica:");
-console.log("===============================");
-console.log(JSON.stringify(resultado, null, 2));
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setResultado(runLexer(codigo));
+    }, 300); // debounce para evitar análise a cada tecla
 
-export default function Home() {
+    return () => clearTimeout(timer);
+  }, [codigo]);
+
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center py-10 font-inter">
       <main className="flex flex-col items-center justify-center w-full px-4 sm:px-6 lg:px-8 max-w-4xl">
@@ -40,9 +44,8 @@ export default function Home() {
               {Object.entries(resultado).map(([category, tokens], index) => (
                 <tr
                   key={category}
-                  className={`border-b border-gray-600 ${
-                    index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"
-                  } hover:bg-gray-600 transition duration-300 ease-in-out`}
+                  className={`border-b border-gray-600 ${index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"
+                    } hover:bg-gray-600 transition duration-300 ease-in-out`}
                 >
                   <td className="py-3 px-6 whitespace-nowrap font-medium capitalize">
                     {category === "errors"
@@ -73,11 +76,15 @@ export default function Home() {
 
         <div className="w-full max-w-4xl bg-gray-800 rounded-lg shadow-xl overflow-hidden">
           <div className="p-4 bg-gray-700 text-gray-200 font-semibold text-lg border-b border-gray-600">
-            Código de Exemplo Analisado
+            Código de Entrada
           </div>
-          <pre className="p-4 text-sm bg-gray-900 text-gray-100 overflow-auto rounded-b-lg">
-            <code>{exemplo.trim()}</code>
-          </pre>
+          <textarea
+            value={codigo}
+            onChange={(e) => setCodigo(e.target.value)}
+            rows={12}
+            className="w-full p-4 bg-gray-900 text-gray-100 font-mono text-sm resize-none outline-none border-none"
+            spellCheck={false}
+          />
         </div>
       </main>
     </div>
