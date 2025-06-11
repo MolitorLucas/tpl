@@ -4,15 +4,15 @@ import { runLexer } from "@/app/grammar/lexer/lexer-runner";
 
 export default function Home() {
   const [codigo, setCodigo] = useState(`*InicioDoFim
-!joaomarcelo_num1:Infi _VsfdAdmin;
-!joaomarcelo_num2:Infi _VsfdAdmin;
-!joaomarcelo_media:Infi _VsfdAdmin;
+  !joaomarcelo_num1:Infi _VsfdAdmin;
+  !joaomarcelo_num2:Infi _VsfdAdmin;
+  !joaomarcelo_media:Infi _VsfdAdmin;
 
-IssoEhGulaCara (° !joaomarcelo_num1 °) _VsfdAdmin;
-IssoEhGulaCara (° !joaomarcelo_num2 °) _VsfdAdmin;
-!joaomarcelo_media <- (° !joaomarcelo_num1 °+° !joaomarcelo_num2 °)°/° 2_VsfdAdmin;
+  IssoEhGulaCara (° !joaomarcelo_num1 °) _VsfdAdmin;
+  IssoEhGulaCara (° !joaomarcelo_num2 °) _VsfdAdmin;
+  !joaomarcelo_media <- (° !joaomarcelo_num1 °+° !joaomarcelo_num2 °)°/° 2_VsfdAdmin;
 
-Banido (° !joaomarcelo_media °) _VsfdAdmin;
+  Banido (° !joaomarcelo_media °) _VsfdAdmin;
 FimDoInicio*`);
 
   const [resultado, setResultado] = useState(() => runLexer(codigo));
@@ -20,7 +20,7 @@ FimDoInicio*`);
   useEffect(() => {
     const timer = setTimeout(() => {
       setResultado(runLexer(codigo));
-    }, 300); // debounce para evitar análise a cada tecla
+    }, 300); 
 
     return () => clearTimeout(timer);
   }, [codigo]);
