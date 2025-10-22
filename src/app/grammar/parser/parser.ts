@@ -202,8 +202,5 @@ export const parse = (parser: CstParser, tokens: IToken[]) => {
     return result;
   }
 
-  result += "Análise Sintática concluída com sucesso!\n";
-  result += "====================\n";
-  console.log(result);
-  return result;
+  return cst;
 };
