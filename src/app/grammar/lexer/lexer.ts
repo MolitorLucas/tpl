@@ -11,8 +11,9 @@ export const getTplLexer = (): Lexer =>
         line,
         column
       ) =>
-        `Error: Unexpected character '${fullText.charAt(
-          startOffset
+        `Error: Unexpected token '${fullText.slice(
+          startOffset,
+          startOffset + length
         )}' at line ${line}, column ${column}.`,
       buildUnableToPopLexerModeMessage(token) {
         return `Error: Unable to pop lexer mode for token '${token.image}' at line ${token.startLine}, column ${token.startColumn}.`;

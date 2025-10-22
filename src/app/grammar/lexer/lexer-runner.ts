@@ -1,8 +1,10 @@
 import { IToken } from "chevrotain";
-import { ICategorizedTokens } from "../models/categorized-token.model";
+import { ICategorizedTokens } from "./../models/categorized-token.model";
 import { getTplLexer } from "./lexer";
 
-export const runLexer = (inputText: string): ICategorizedTokens => {
+export const runLexer = (
+  inputText: string
+): { categorizedResult: ICategorizedTokens; result: IToken[] } => {
   const categorizedResult: ICategorizedTokens = {
     keywords: [],
     symbols: [],
@@ -17,7 +19,7 @@ export const runLexer = (inputText: string): ICategorizedTokens => {
 
   if (lexingResult.errors.length > 0) {
     categorizedResult.errors = lexingResult.errors.map((err) => err.message);
-    return categorizedResult;
+    return { categorizedResult, result: lexingResult.tokens };
   }
 
   lexingResult.tokens.forEach((token: IToken) => {
@@ -46,5 +48,5 @@ export const runLexer = (inputText: string): ICategorizedTokens => {
     }
   });
 
-  return categorizedResult;
+  return { categorizedResult, result: lexingResult.tokens };
 };
